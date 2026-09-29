@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ILAW Lesson Plan Generator - DepEd DO 016 s. 2026 Compliant</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deped: {
+              blue: '#003366',
+              navy: '#002244',
+              gold: '#FFCC00',
+              red: '#C8102E',
+              light: '#F0F4F8'
+            },
+            ilaw: {
+              intent: '#0284C7',
+              learning: '#16A34A',
+              assess: '#D97706',
+              forward: '#9333EA'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Newsreader', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Print Specific Styling */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-area, #print-area * {
+        visibility: visible;
+      }
+      #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-ilaw {
+      animation: pulse-soft 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-soft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="bg-deped-navy text-white shadow-md sticky top-0 z-40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-deped-gold flex items-center justify-center text-deped-navy font-bold text-xl shadow-inner">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+              ILAW Lesson Plan Studio
+              <span class="text-xs font-normal bg-blue-900 text-blue-200 px-2.5 py-0.5 rounded-full border border-blue-700">DepEd DO 016 s. 2026</span>
+            </h1>
+            <p class="text-xs text-slate-300 hidden sm:block">Intentions • Learning Experience • Assessing Learning • Ways Forward</p>
+          </div>
+        </div>
+
+        <!-- Quick Actions & Preset Selector -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <div class="relative inline-block text-left">
+            <button id="preset-dropdown-btn" onclick="toggleDropdown('preset-menu')" class="px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+              <span class="hidden md:inline">Load Sample</span>
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <div id="preset-menu" class="hidden origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-slate-100 focus:outline-none z-50">
+              <div class="py-1">
+                <span class="block px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Sample Lesson Plans</span>
+                <a href="#" onclick="loadPreset('english'); return false;" class="group flex items-center px-4 py-2 text-xs text-slate-700 hover:bg-slate-100">
+                  <i class="fa-solid fa-book-open text-blue-600 mr-2"></i> Grade 7 English (MATATAG)
+                </a>
+                <a href="#" onclick="loadPreset('science'); return false;" class="group flex items-center px-4 py-2 text-xs text-slate-700 hover:bg-slate-100">
+                  <i class="fa-solid fa-flask text-emerald-600 mr-2"></i> Grade 10 Science (Earthquake Epicenters)
+                </a>
+                <a href="#" onclick="loadPreset('math'); return false;" class="group flex items-center px-4 py-2 text-xs text-slate-700 hover:bg-slate-100">
+                  <i class="fa-solid fa-calculator text-amber-600 mr-2"></i> Grade 4 Math (Fractions)
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="clearForm()" class="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg transition" title="Clear all fields">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Reset
+          </button>
+
+          <button onclick="triggerPrint()" class="px-3.5 py-1.5 text-xs font-semibold text-slate-900 bg-deped-gold hover:bg-amber-400 rounded-lg shadow flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-print"></i>
+            <span>Print / Export PDF</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 no-print">
+    
+    <!-- Top Context Banner -->
+    <div class="mb-6 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="bg-amber-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">New Policy Standard</span>
+          <p class="text-xs text-amber-300 font-medium">DepEd Order No. 016, s. 2026 Framework</p>
+        </div>
+        <h2 class="text-base sm:text-lg font-bold">Interactive Lesson Planning & Live Canvas Preview</h2>
+        <p class="text-xs text-slate-300 max-w-2xl">
+          Fill out the structured fields on the left. The live view renders simultaneously on the right using HTML & HTML5 Canvas sheet visualizer. Fully compliant with DepEd's simplified 4-part ILAW framework.
+        </p>
+      </div>
+
+      <!-- Quick View Mode Switcher -->
+      <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700 self-start md:self-auto">
+        <button id="tab-btn-html" onclick="switchPreviewTab('html')" class="px-3 py-1.5 text-xs font-medium rounded-lg text-white bg-blue-600 shadow transition flex items-center gap-1.5">
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Document View</span>
+        </button>
+        <button id="tab-btn-canvas" onclick="switchPreviewTab('canvas')" class="px-3 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-paintbrush"></i>
+          <span>Canvas Engine</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Grid: Form Inputs (Left) vs Preview / Canvas (Right) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- LEFT COLUMN: Form Inputs -->
+      <div class="lg:col-span-6 space-y-5">
+
+        <!-- Accordion / Section 1: Basic Information -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs flex items-center justify-center font-bold">1</span>
+              General Information & Metadata
+            </h3>
+            <span class="text-xs text-slate-500 font-normal">Header Details</span>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="teacherName" class="block text-xs font-semibold text-slate-700 mb-1">Teacher's Name</label>
+                <input type="text" id="teacherName" oninput="updatePreview()" placeholder="e.g. Maria Santos, LPT" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+
+              <div>
+                <label for="learningArea" class="block text-xs font-semibold text-slate-700 mb-1">Learning Area / Subject</label>
+                <input type="text" id="learningArea" oninput="updatePreview()" placeholder="e.g. English / Science / Math" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+
+              <div>
+                <label for="gradeSection" class="block text-xs font-semibold text-slate-700 mb-1">Grade Level & Section</label>
+                <input type="text" id="gradeSection" oninput="updatePreview()" placeholder="e.g. Grade 7 - Diamond" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+
+              <div>
+                <label for="lessonTitle" class="block text-xs font-semibold text-slate-700 mb-1">Lesson Topic / Title</label>
+                <input type="text" id="lessonTitle" oninput="updatePreview()" placeholder="e.g. Analyzing Author's Purpose" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+
+              <div>
+                <label for="termWeek" class="block text-xs font-semibold text-slate-700 mb-1">Term & Week</label>
+                <input type="text" id="termWeek" oninput="updatePreview()" placeholder="e.g. Term 2 | Week 3" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+
+              <div>
+                <label for="durationSessions" class="block text-xs font-semibold text-slate-700 mb-1">Duration / No. of Sessions</label>
+                <input type="text" id="durationSessions" oninput="updatePreview()" placeholder="e.g. 60 Mins (4 Sessions)" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3 pt-2">
+              <div>
+                <label for="references" class="block text-xs font-semibold text-slate-700 mb-1">References & Learning Resources</label>
+                <input type="text" id="references" oninput="updatePreview()" placeholder="e.g. MATATAG Curriculum Guide p. 42-45, Textbooks, Digital Slides" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+
+              <div>
+                <label for="aiDeclaration" class="block text-xs font-semibold text-slate-700 mb-1">
+                  Declaration of AI Use <span class="text-slate-400 font-normal">(DepEd DO 003, s. 2026 Aligned)</span>
+                </label>
+                <input type="text" id="aiDeclaration" oninput="updatePreview()" placeholder="e.g. AI was used for text formatting and drafting ideas. All outputs validated by teacher." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ILAW Section I: INTENTIONS -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden border-l-4 border-l-ilaw-intent">
+          <div class="bg-sky-50/50 px-5 py-3 border-b border-sky-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-sky-600 text-white font-black text-sm flex items-center justify-center">I</span>
+              <div>
+                <h3 class="text-sm font-bold text-sky-950">Intentions</h3>
+                <p class="text-[11px] text-sky-700">Competencies, Learning Objectives, and Learner Context</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-bullseye text-sky-400"></i>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div>
+              <label for="intentCompetencies" class="block text-xs font-semibold text-slate-700 mb-1">Learning Competency & Curriculum Standards</label>
+              <textarea id="intentCompetencies" oninput="updatePreview()" rows="2" placeholder="State the curriculum standards or target competencies to be achieved..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"></textarea>
+            </div>
+
+            <div>
+              <label for="intentObjectives" class="block text-xs font-semibold text-slate-700 mb-1">Learning Objectives (Specific & Progressive)</label>
+              <textarea id="intentObjectives" oninput="updatePreview()" rows="3" placeholder="1. Identify key information in a text&#10;2. Analyze author's tone and intent&#10;3. Express opinions collaboratively" class="w-full px-3 py-2 text-xs font-mono rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"></textarea>
+            </div>
+
+            <div>
+              <label for="intentContext" class="block text-xs font-semibold text-slate-700 mb-1">Learner Context & Prior Readiness</label>
+              <textarea id="intentContext" oninput="updatePreview()" rows="2" placeholder="Observations on student readiness, strengths, interests, or specific learning needs..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ILAW Section L: LEARNING EXPERIENCE -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden border-l-4 border-l-ilaw-learning">
+          <div class="bg-emerald-50/50 px-5 py-3 border-b border-emerald-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-black text-sm flex items-center justify-center">L</span>
+              <div>
+                <h3 class="text-sm font-bold text-emerald-950">Learning Experience</h3>
+                <p class="text-[11px] text-emerald-700">Pre-Lesson, Flow of Activities, Resources & Contextualization</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-route text-emerald-400"></i>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div>
+              <label for="learnPreLesson" class="block text-xs font-semibold text-slate-700 mb-1">Pre-Lesson Activity / Warm-up Routine</label>
+              <textarea id="learnPreLesson" oninput="updatePreview()" rows="2" placeholder="Brief introductory check-in, prior knowledge recall, or hook question..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"></textarea>
+            </div>
+
+            <div>
+              <label for="learnFlow" class="block text-xs font-semibold text-slate-700 mb-1">Lesson Flow & Instructional Activities</label>
+              <textarea id="learnFlow" oninput="updatePreview()" rows="5" placeholder="Step-by-step instructional flow applying Learning Design Principles (Scaffolding, Active Retrieval, Social Learning, Modeling)..." class="w-full px-3 py-2 text-xs font-mono rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="learnResources" class="block text-xs font-semibold text-slate-700 mb-1">Learning Resources & Materials</label>
+                <textarea id="learnResources" oninput="updatePreview()" rows="2" placeholder="Worksheets, digital slides, manipulative materials, emergency offline options..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"></textarea>
+              </div>
+
+              <div>
+                <label for="learnIntegration" class="block text-xs font-semibold text-slate-700 mb-1">Integration & Contextualization</label>
+                <textarea id="learnIntegration" oninput="updatePreview()" rows="2" placeholder="Cross-curricular links, local community context, values, or tech integration..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ILAW Section A: ASSESSING LEARNING -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden border-l-4 border-l-ilaw-assess">
+          <div class="bg-amber-50/50 px-5 py-3 border-b border-amber-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-amber-600 text-white font-black text-sm flex items-center justify-center">A</span>
+              <div>
+                <h3 class="text-sm font-bold text-amber-950">Assessing Learning</h3>
+                <p class="text-[11px] text-amber-700">Formative Assessments & Inclusive Accommodations</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-list-check text-amber-400"></i>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div>
+              <label for="assessFormative" class="block text-xs font-semibold text-slate-700 mb-1">Formative Assessment Strategies</label>
+              <textarea id="assessFormative" oninput="updatePreview()" rows="3" placeholder="Low-stakes checks for understanding during instruction, exit tickets, peer checks..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"></textarea>
+            </div>
+
+            <div>
+              <label for="assessAccommodations" class="block text-xs font-semibold text-slate-700 mb-1">Inclusive Accommodations & Support</label>
+              <textarea id="assessAccommodations" oninput="updatePreview()" rows="2" placeholder="Differentiated tasks, visual aids, extended time, or modifications for diverse learners..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ILAW Section W: WAYS FORWARD -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden border-l-4 border-l-ilaw-forward">
+          <div class="bg-purple-50/50 px-5 py-3 border-b border-purple-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-purple-600 text-white font-black text-sm flex items-center justify-center">W</span>
+              <div>
+                <h3 class="text-sm font-bold text-purple-950">Ways Forward</h3>
+                <p class="text-[11px] text-purple-700">Extended Opportunities & Reflective Practice</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrows-to-circle text-purple-400"></i>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div>
+              <label for="forwardExtended" class="block text-xs font-semibold text-slate-700 mb-1">Extended Learning Opportunities</label>
+              <textarea id="forwardExtended" oninput="updatePreview()" rows="2" placeholder="Take-home activities, enrichment projects, community application tasks..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"></textarea>
+            </div>
+
+            <div>
+              <label for="forwardReflections" class="block text-xs font-semibold text-slate-700 mb-1">Reflections & Next Instructional Steps</label>
+              <textarea id="forwardReflections" oninput="updatePreview()" rows="2" placeholder="Notes on what worked well, areas for reteaching, coaching requests, or student feedback..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="pt-2">
+          <button onclick="generateAndFocusPreview()" class="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white text-sm font-bold rounded-xl shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-bolt text-amber-300"></i>
+            <span>Generate & Highlight Final Lesson Plan</span>
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT COLUMN: Interactive Code & Canvas Preview Pane -->
+      <div class="lg:col-span-6 space-y-4 lg:sticky lg:top-20">
+
+        <!-- Toolbar above Preview -->
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              Live Sync Active
+            </span>
+            <span id="preview-mode-tag" class="text-xs text-slate-500 font-medium">Doc View</span>
+          </div>
+
+          <div class="flex items-center space-x-1.5">
+            <!-- Canvas Zoom Controls (visible in canvas mode) -->
+            <div id="canvas-zoom-controls" class="hidden items-center space-x-1 bg-slate-100 p-1 rounded-lg">
+              <button onclick="adjustCanvasZoom(-0.1)" class="w-6 h-6 flex items-center justify-center text-slate-700 hover:bg-white rounded text-xs font-bold" title="Zoom Out">-</button>
+              <span id="zoom-level-text" class="text-[10px] text-slate-600 font-mono px-1">100%</span>
+              <button onclick="adjustCanvasZoom(0.1)" class="w-6 h-6 flex items-center justify-center text-slate-700 hover:bg-white rounded text-xs font-bold" title="Zoom In">+</button>
+              <button onclick="resetCanvasZoom()" class="px-1.5 py-0.5 text-[10px] text-slate-600 hover:bg-white rounded" title="Fit Canvas">Fit</button>
+            </div>
+
+            <button onclick="copyToClipboard()" class="px-2.5 py-1 text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition flex items-center gap-1" title="Copy Content">
+              <i class="fa-regular fa-copy"></i>
+              <span class="hidden sm:inline">Copy Text</span>
+            </button>
+
+            <button onclick="downloadCanvasImage()" id="download-img-btn" class="hidden px-2.5 py-1 text-xs text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-medium transition items-center gap-1">
+              <i class="fa-solid fa-image"></i>
+              <span class="hidden sm:inline">PNG Export</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- HTML Document Render View -->
+        <div id="html-preview-container" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 min-h-[650px] max-h-[85vh] overflow-y-auto">
+          <div id="formatted-lesson-plan" class="space-y-6">
+            <!-- Rendered dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Canvas Rendering Engine View -->
+        <div id="canvas-preview-container" class="hidden bg-slate-900 rounded-2xl border border-slate-800 shadow-inner p-4 min-h-[650px] max-h-[85vh] overflow-auto flex items-center justify-center relative">
+          <div class="canvas-wrapper flex flex-col items-center">
+            <canvas id="ilawCanvas" class="shadow-2xl rounded bg-white max-w-full transition-transform duration-150"></canvas>
+            <p class="text-[11px] text-slate-400 mt-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-info text-amber-400"></i>
+              Canvas Engine dynamically renders vectorized typography & official DepEd ILAW sheet layout.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Hidden Print-Ready Area (Used exclusively for printing) -->
+  <div id="print-area" class="hidden">
+    <div id="print-content" class="p-8 font-sans">
+      <!-- Print layout injected via JS -->
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <div id="toast-icon" class="w-6 h-6 rounded-full bg-emerald-500 text-slate-900 text-xs font-bold flex items-center justify-center">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <span id="toast-message" class="text-xs font-medium">Notification message</span>
+  </div>
+
+  <script>
+    /* Application State */
+    let currentTab = 'html'; // 'html' or 'canvas'
+    let canvasScale = 1.0;
+    const STORAGE_KEY = 'ilaw_lesson_plan_data_v1';
+
+    // Preset data collections for instant loading
+    const presets = {
+      english: {
+        teacherName: "Teacher Maria Santos, LPT",
+        learningArea: "English (MATATAG)",
+        gradeSection: "Grade 7 - Mabini",
+        lessonTitle: "Analyzing Author's Purpose & Textual Context",
+        termWeek: "Term 2 | Week 3",
+        durationSessions: "60 Mins (Session 1 of 4)",
+        references: "DepEd MATATAG English Curriculum Guide 2026, Grade 7 Learning Module p. 112-120",
+        aiDeclaration: "AI assistance was used to organize instructional flow and draft formative assessment prompts in accordance with DO 003, s. 2026.",
+        intentCompetencies: "EN7LIT-II-1: Analyze literary texts to extract author's purpose, central theme, and underlying socio-cultural context.",
+        intentObjectives: "1. Distinguish between to inform, persuade, and entertain in varied short passages.\n2. Identify contextual clues signaling the author's point of view.\n3. Collaborate in small groups to evaluate local news snippets.",
+        intentContext: "Learners have prior experience with story elements but require scaffolding in recognizing subtle persuasive techniques and tone differences.",
+        learnPreLesson: "Interactive 'Spot the Goal' warm-up: Display 3 short slogans and ask students to vote on whether each aims to inform, entertain, or persuade.",
+        learnFlow: "1. Explicit Teaching (15 mins): Direct modeling of text analysis using a local editorial article.\n2. Guided Practice (20 mins): Group activity - 'Think-Pair-Share' with graphic organizers.\n3. Independent Practice (15 mins): Short passage decoding task.",
+        learnResources: "Printed reading cards, graphic organizer handouts, digital projector slides.",
+        learnIntegration: "Media Literacy & Values Integration: Discussing responsible social media sharing and critical thinking.",
+        assessFormative: "3-2-1 Exit Ticket: 3 things learned, 2 questions remaining, 1 sentence summarizing the author's main purpose.",
+        assessAccommodations: "Provide visual sentence frames for struggling readers; offer advanced analysis prompts for fast finishers.",
+        forwardExtended: "Encourage students to cut out or screenshot one advertisement from home and write a 2-sentence purpose analysis.",
+        forwardReflections: "Monitor how effectively students utilize graphic organizers during pair work for tomorrow's continuation session."
+      },
+      science: {
+        teacherName: "Juan Dela Cruz, LPT",
+        learningArea: "Science (Earth & Space)",
+        gradeSection: "Grade 10 - Einstein",
+        lessonTitle: "Plate Tectonics & Locating Earthquake Epicenters",
+        termWeek: "Term 1 | Week 4",
+        durationSessions: "120 Mins (2 Sessions)",
+        references: "DepEd Science 10 Learner's Material pp. 45-52, PHIVOLCS Seismological Maps",
+        aiDeclaration: "AI tool was utilized for language refinement and structuring session progression; content verified by science department.",
+        intentCompetencies: "S10ES-Ia-j-36.1: Demonstrate understanding of plate tectonics by triangulation method to locate earthquake epicenters.",
+        intentObjectives: "1. Calculate distance of epicenter using S-P time interval data.\n2. Plot intersecting seismic circles on a Philippine map grid.\n3. Articulate earthquake disaster preparedness protocols.",
+        intentContext: "Students possess basic knowledge of earthquake waves (P and S waves) from Grade 8 but need hands-on practice with scale calculations.",
+        learnPreLesson: "Short video clip of seismic wave propagation followed by a 2-minute quick recall quiz on P vs S waves.",
+        learnFlow: "1. Teacher Demonstration (20 mins): Step-by-step walkthrough of triangulation formula and compass plotting.\n2. Group Activity (40 mins): 'Find the Epicenter' simulation using data from 3 seismic stations in Luzon.\n3. Discussion (20 mins): Synthesis of results.",
+        learnResources: "Calculators, drawing compasses, printed map grids, seismic data worksheets.",
+        learnIntegration: "Disaster Risk Reduction and Management (DRRM) & Geography integration.",
+        assessFormative: "Formative rubric check on map plotting accuracy and triangulation intersection precision during group work.",
+        assessAccommodations: "Pair learners with peer mentors for mathematical calculations; provide simplified data tables if needed.",
+        forwardExtended: "Download PHIVOLCS FaultFinder app or check official website to identify nearest active fault line to community.",
+        forwardReflections: "Ensure all compass tools are functional prior to Session 2 plotting activities."
+      },
+      math: {
+        teacherName: "Ana Reyes, LPT",
+        learningArea: "Mathematics",
+        gradeSection: "Grade 4 - Sampaguita",
+        lessonTitle: "Understanding Fractions & Decimals in Everyday Life",
+        termWeek: "Term 2 | Week 1",
+        durationSessions: "50 Mins",
+        references: "MATATAG Grade 4 Math Guide, Visual Manipulatives Guide p. 18-22",
+        aiDeclaration: "AI used solely for generating realistic word problem scenarios based on local market settings.",
+        intentCompetencies: "M4NS-IIa-98: Convert proper fractions with denominators of 10 and 100 into decimal numbers.",
+        intentObjectives: "1. Represent tenths and hundredths using visual grid models.\n2. Convert fractions like 3/10 or 45/100 into decimal form.\n3. Apply decimal values in money computation scenarios.",
+        intentContext: "Learners are comfortable with whole number operations and basic fraction visuals.",
+        learnPreLesson: "Market Play: Display 10 pesos and ask how 1 peso or 50 centavos is represented as a fraction of 10.",
+        learnFlow: "1. Concrete Phase (15 mins): Using 10x10 block grids to shade fractional parts.\n2. Pictorial to Abstract Phase (20 mins): Transitioning shaded grids into 0.1 and 0.01 notations.\n3. Math Games (15 mins): 'Fraction-Decimal Match' card game.",
+        learnResources: "Base-ten blocks, 10x10 grid sheets, play money currency.",
+        learnIntegration: "Financial Literacy: Understanding Philippine centavo values and budgeting.",
+        assessFormative: "Whiteboard quick check: Show a fraction card and have all students write the corresponding decimal on individual miniboards.",
+        assessAccommodations: "Use tactile textured grids for sensory learners; extra visual color-coding for decimal points.",
+        forwardExtended: "Find 3 grocery item prices at home and list their centavo values as both fractions and decimals.",
+        forwardReflections: "Assess if additional grid practice is required before proceeding to decimal addition next week."
+      }
+    };
+
+    // Initialize application on DOM content loaded
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedData();
+      updatePreview();
+      
+      // Handle window resize for dynamic canvas adjustment
+      window.addEventListener('resize', () => {
+        if (currentTab === 'canvas') {
+          renderCanvasPreview();
+        }
+      });
+    });
+
+    // Helper: Get element value safely
+    function getValue(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    }
+
+    // Helper: Set element value safely
+    function setValue(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val || '';
+    }
+
+    // Toggle dropdown menus
+    function toggleDropdown(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    // Close dropdowns on outside click
+    window.onclick = function(e) {
+      if (!e.target.closest('#preset-dropdown-btn') && !e.target.closest('#preset-menu')) {
+        const menu = document.getElementById('preset-menu');
+        if (menu && !menu.classList.contains('hidden')) {
+          menu.classList.add('hidden');
+        }
+      }
+    }
+
+    // Save current form inputs to localStorage
+    function saveData() {
+      const fields = [
+        'teacherName', 'learningArea', 'gradeSection', 'lessonTitle', 'termWeek', 
+        'durationSessions', 'references', 'aiDeclaration', 'intentCompetencies', 
+        'intentObjectives', 'intentContext', 'learnPreLesson', 'learnFlow', 
+        'learnResources', 'learnIntegration', 'assessFormative', 'assessAccommodations', 
+        'forwardExtended', 'forwardReflections'
+      ];
+      
+      const data = {};
+      fields.forEach(f => data[f] = getValue(f));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        console.warn('LocalStorage save error', e);
+      }
+    }
+
+    // Load saved data from localStorage or fallback to default preset
+    function loadSavedData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const data = JSON.parse(raw);
+          Object.keys(data).forEach(key => setValue(key, data[key]));
+          return;
+        }
+      } catch (e) {
+        console.warn('LocalStorage read error', e);
+      }
+      // Load default english preset if no saved data exists
+      loadPreset('english', false);
+    }
+
+    // Load selected preset into form fields
+    function loadPreset(presetKey, showToastMsg = true) {
+      const preset = presets[presetKey];
+      if (!preset) return;
+
+      Object.keys(preset).forEach(key => setValue(key, preset[key]));
+      saveData();
+      updatePreview();
+
+      const menu = document.getElementById('preset-menu');
+      if (menu) menu.classList.add('hidden');
+
+      if (showToastMsg) {
+        showToast(`Loaded ${preset.learningArea} sample template!`);
+      }
+    }
+
+    // Clear all form inputs
+    function clearForm() {
+      const fields = [
+        'teacherName', 'learningArea', 'gradeSection', 'lessonTitle', 'termWeek', 
+        'durationSessions', 'references', 'aiDeclaration', 'intentCompetencies', 
+        'intentObjectives', 'intentContext', 'learnPreLesson', 'learnFlow', 
+        'learnResources', 'learnIntegration', 'assessFormative', 'assessAccommodations', 
+        'forwardExtended', 'forwardReflections'
+      ];
+      fields.forEach(f => setValue(f, ''));
+      saveData();
+      updatePreview();
+      showToast('Form cleared successfully.');
+    }
+
+    // Switch between Document View (HTML) and Canvas Render Engine
+    function switchPreviewTab(tab) {
+      currentTab = tab;
+      const htmlBtn = document.getElementById('tab-btn-html');
+      const canvasBtn = document.getElementById('tab-btn-canvas');
+      const htmlContainer = document.getElementById('html-preview-container');
+      const canvasContainer = document.getElementById('canvas-preview-container');
+      const modeTag = document.getElementById('preview-mode-tag');
+      const zoomControls = document.getElementById('canvas-zoom-controls');
+      const downloadBtn = document.getElementById('download-img-btn');
+
+      if (tab === 'html') {
+        htmlBtn.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-white bg-blue-600 shadow transition flex items-center gap-1.5";
+        canvasBtn.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+        htmlContainer.classList.remove('hidden');
+        canvasContainer.classList.add('hidden');
+        modeTag.textContent = "Doc View";
+        zoomControls.classList.add('hidden');
+        downloadBtn.classList.add('hidden');
+        downloadBtn.classList.remove('flex');
+      } else {
+        canvasBtn.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-white bg-blue-600 shadow transition flex items-center gap-1.5";
+        htmlBtn.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+        canvasContainer.classList.remove('hidden');
+        htmlContainer.classList.add('hidden');
+        modeTag.textContent = "Canvas Engine";
+        zoomControls.classList.remove('hidden');
+        zoomControls.classList.add('flex');
+        downloadBtn.classList.remove('hidden');
+        downloadBtn.classList.add('flex');
+        
+        renderCanvasPreview();
+      }
+    }
+
+    // Primary Update Function: Triggers document formatting & canvas redraw
+    function updatePreview() {
+      saveData();
+      renderHTMLPreview();
+      if (currentTab === 'canvas') {
+        renderCanvasPreview();
+      }
+    }
+
+    // Format raw text into line-broken HTML with clean lists
+    function formatText(str) {
+      if (!str) return '<span class="text-slate-400 italic font-normal">Not specified</span>';
+      return str.split('\n').map(line => line.trim()).filter(line => line.length > 0).join('<br>');
+    }
+
+    // Render formatted HTML document view
+    function renderHTMLPreview() {
+      const container = document.getElementById('formatted-lesson-plan');
+      const printContainer = document.getElementById('print-content');
+
+      const data = {
+        teacher: getValue('teacherName') || 'Teacher Name',
+        subject: getValue('learningArea') || 'Learning Area',
+        grade: getValue('gradeSection') || 'Grade & Section',
+        title: getValue('lessonTitle') || 'Lesson Title',
+        termWeek: getValue('termWeek') || 'Term & Week',
+        duration: getValue('durationSessions') || 'Duration',
+        refs: getValue('references'),
+        ai: getValue('aiDeclaration'),
+        intentComp: getValue('intentCompetencies'),
+        intentObj: getValue('intentObjectives'),
+        intentCtx: getValue('intentContext'),
+        learnPre: getValue('learnPreLesson'),
+        learnFlow: getValue('learnFlow'),
+        learnRes: getValue('learnResources'),
+        learnInteg: getValue('learnIntegration'),
+        assessForm: getValue('assessFormative'),
+        assessAcc: getValue('assessAccommodations'),
+        forwardExt: getValue('forwardExtended'),
+        forwardRef: getValue('forwardReflections')
+      };
+
+      const htmlContent = `
+        <!-- Official Header Style -->
+        <div class="border-b-2 border-deped-blue pb-4 mb-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] uppercase tracking-widest font-bold text-deped-blue">Republic of the Philippines • Department of Education</p>
+              <h2 class="text-xl font-bold font-serif text-slate-900 tracking-tight">DAILY LESSON LOG (ILAW FRAMEWORK)</h2>
+              <p class="text-xs text-slate-500 font-medium">DepEd Order No. 016, s. 2026 Guidelines on Lesson Planning</p>
+            </div>
+            <div class="text-right border-l border-slate-200 pl-4 hidden sm:block">
+              <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-900 font-bold text-[10px] rounded mb-1">OFFICIAL TEMPLATE</span>
+              <p class="text-[10px] text-slate-400">4-Part Simplified Model</p>
+            </div>
+          </div>
+
+          <!-- Metadata Table -->
+          <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+            <div><span class="text-slate-500 block text-[10px] uppercase font-bold">Teacher</span> <strong class="text-slate-800">${data.teacher}</strong></div>
+            <div><span class="text-slate-500 block text-[10px] uppercase font-bold">Learning Area</span> <strong class="text-slate-800">${data.subject}</strong></div>
+            <div><span class="text-slate-500 block text-[10px] uppercase font-bold">Grade & Section</span> <strong class="text-slate-800">${data.grade}</strong></div>
+            <div><span class="text-slate-500 block text-[10px] uppercase font-bold">Lesson Topic</span> <strong class="text-slate-800">${data.title}</strong></div>
+            <div><span class="text-slate-500 block text-[10px] uppercase font-bold">Term & Week</span> <strong class="text-slate-800">${data.termWeek}</strong></div>
+            <div><span class="text-slate-500 block text-[10px] uppercase font-bold">Duration / Sessions</span> <strong class="text-slate-800">${data.duration}</strong></div>
+          </div>
+
+          ${data.refs || data.ai ? `
+            <div class="mt-2 text-[11px] text-slate-600 bg-amber-50/50 p-2 rounded border border-amber-100 space-y-1">
+              ${data.refs ? `<div><strong>References:</strong> ${data.refs}</div>` : ''}
+              ${data.ai ? `<div><strong>AI Declaration:</strong> ${data.ai}</div>` : ''}
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- ILAW Core Structure -->
+        <div class="space-y-4 text-xs text-slate-800">
+
+          <!-- Section I: INTENTIONS -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+            <div class="bg-sky-600 text-white px-3 py-1.5 font-bold flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-bullseye"></i> I. INTENTIONS (What learners should know & do)</span>
+              <span class="text-[10px] bg-sky-700 px-2 py-0.5 rounded uppercase font-semibold">Intent</span>
+            </div>
+            <div class="p-3 bg-white space-y-2.5">
+              <div>
+                <h4 class="font-bold text-sky-900 uppercase text-[10px] tracking-wider mb-0.5">Learning Competencies & Standards</h4>
+                <div class="text-slate-700 bg-sky-50/30 p-2 rounded border border-sky-100/50">${formatText(data.intentComp)}</div>
+              </div>
+              <div>
+                <h4 class="font-bold text-sky-900 uppercase text-[10px] tracking-wider mb-0.5">Unpacked Learning Objectives</h4>
+                <div class="text-slate-700 bg-sky-50/30 p-2 rounded border border-sky-100/50">${formatText(data.intentObj)}</div>
+              </div>
+              <div>
+                <h4 class="font-bold text-sky-900 uppercase text-[10px] tracking-wider mb-0.5">Learner Context & Readiness</h4>
+                <div class="text-slate-700 bg-sky-50/30 p-2 rounded border border-sky-100/50">${formatText(data.intentCtx)}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section L: LEARNING EXPERIENCE -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+            <div class="bg-emerald-600 text-white px-3 py-1.5 font-bold flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-route"></i> II. LEARNING EXPERIENCE (Activities & Instructional Flow)</span>
+              <span class="text-[10px] bg-emerald-700 px-2 py-0.5 rounded uppercase font-semibold">Learning</span>
+            </div>
+            <div class="p-3 bg-white space-y-2.5">
+              <div>
+                <h4 class="font-bold text-emerald-900 uppercase text-[10px] tracking-wider mb-0.5">Pre-Lesson Warmup & Readiness Check</h4>
+                <div class="text-slate-700 bg-emerald-50/30 p-2 rounded border border-emerald-100/50">${formatText(data.learnPre)}</div>
+              </div>
+              <div>
+                <h4 class="font-bold text-emerald-900 uppercase text-[10px] tracking-wider mb-0.5">Lesson Flow & Learning Design Principles</h4>
+                <div class="text-slate-700 bg-emerald-50/30 p-2 rounded border border-emerald-100/50">${formatText(data.learnFlow)}</div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <h4 class="font-bold text-emerald-900 uppercase text-[10px] tracking-wider mb-0.5">Learning Resources</h4>
+                  <div class="text-slate-700 bg-emerald-50/30 p-2 rounded border border-emerald-100/50">${formatText(data.learnRes)}</div>
+                </div>
+                <div>
+                  <h4 class="font-bold text-emerald-900 uppercase text-[10px] tracking-wider mb-0.5">Integration & Contextualization</h4>
+                  <div class="text-slate-700 bg-emerald-50/30 p-2 rounded border border-emerald-100/50">${formatText(data.learnInteg)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section A: ASSESSING LEARNING -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+            <div class="bg-amber-600 text-white px-3 py-1.5 font-bold flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-check"></i> III. ASSESSING LEARNING (Evidence of Mastery & Inclusion)</span>
+              <span class="text-[10px] bg-amber-700 px-2 py-0.5 rounded uppercase font-semibold">Assessing</span>
+            </div>
+            <div class="p-3 bg-white space-y-2.5">
+              <div>
+                <h4 class="font-bold text-amber-900 uppercase text-[10px] tracking-wider mb-0.5">Formative Assessment Tasks & Checks</h4>
+                <div class="text-slate-700 bg-amber-50/30 p-2 rounded border border-amber-100/50">${formatText(data.assessForm)}</div>
+              </div>
+              <div>
+                <h4 class="font-bold text-amber-900 uppercase text-[10px] tracking-wider mb-0.5">Inclusive Accommodations & Support</h4>
+                <div class="text-slate-700 bg-amber-50/30 p-2 rounded border border-amber-100/50">${formatText(data.assessAcc)}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section W: WAYS FORWARD -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+            <div class="bg-purple-600 text-white px-3 py-1.5 font-bold flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-arrows-to-circle"></i> IV. WAYS FORWARD (Extension & Reflection)</span>
+              <span class="text-[10px] bg-purple-700 px-2 py-0.5 rounded uppercase font-semibold">Ways Forward</span>
+            </div>
+            <div class="p-3 bg-white space-y-2.5">
+              <div>
+                <h4 class="font-bold text-purple-900 uppercase text-[10px] tracking-wider mb-0.5">Extended Learning Opportunities</h4>
+                <div class="text-slate-700 bg-purple-50/30 p-2 rounded border border-purple-100/50">${formatText(data.forwardExt)}</div>
+              </div>
+              <div>
+                <h4 class="font-bold text-purple-900 uppercase text-[10px] tracking-wider mb-0.5">Teacher Reflections & Next Steps</h4>
+                <div class="text-slate-700 bg-purple-50/30 p-2 rounded border border-purple-100/50">${formatText(data.forwardRef)}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Document Footer -->
+        <div class="mt-6 pt-4 border-t border-slate-200 text-[10px] text-slate-400 flex items-center justify-between">
+          <span>Prepared in compliance with DepEd Order No. 016, s. 2026</span>
+          <span>ILAW Lesson Plan Generator</span>
+        </div>
+      `;
+
+      container.innerHTML = htmlContent;
+      printContainer.innerHTML = htmlContent;
+    }
+
+    // Render high-definition visual sheet on HTML5 Canvas
+    function renderCanvasPreview() {
+      const canvas = document.getElementById('ilawCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // Standard A4 aspect canvas resolution
+      const sheetWidth = 800;
+      const sheetHeight = 1130;
+
+      canvas.width = sheetWidth;
+      canvas.height = sheetHeight;
+
+      // Apply zoom transform scale
+      canvas.style.transform = `scale(${canvasScale})`;
+      canvas.style.transformOrigin = 'top center';
+
+      // Background Paper
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, sheetWidth, sheetHeight);
+
+      // Outer Margin Border
+      ctx.strokeStyle = '#003366';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(20, 20, sheetWidth - 40, sheetHeight - 40);
+
+      // Header Banner Background
+      ctx.fillStyle = '#003366';
+      ctx.fillRect(20, 20, sheetWidth - 40, 75);
+
+      // Header Text
+      ctx.fillStyle = '#FFCC00';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText('REPUBLIC OF THE PHILIPPINES • DEPARTMENT OF EDUCATION', 35, 42);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 18px "Newsreader", Georgia, serif';
+      ctx.fillText('DAILY LESSON LOG - ILAW FRAMEWORK', 35, 65);
+
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.fillText('DepEd Order No. 016, s. 2026 Guidelines', 35, 80);
+
+      // Metadata Table Section
+      const metaY = 105;
+      ctx.fillStyle = '#F8FAFC';
+      ctx.fillRect(35, metaY, sheetWidth - 70, 70);
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(35, metaY, sheetWidth - 70, 70);
+
+      const teacher = getValue('teacherName') || 'N/A';
+      const subject = getValue('learningArea') || 'N/A';
+      const grade = getValue('gradeSection') || 'N/A';
+      const title = getValue('lessonTitle') || 'N/A';
+      const term = getValue('termWeek') || 'N/A';
+      const duration = getValue('durationSessions') || 'N/A';
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      
+      // Column 1
+      ctx.fillText('TEACHER:', 45, metaY + 20);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText(truncateText(ctx, teacher, 210), 45, metaY + 35);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('TOPIC:', 45, metaY + 50);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText(truncateText(ctx, title, 210), 45, metaY + 63);
+
+      // Column 2
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('LEARNING AREA:', 280, metaY + 20);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText(truncateText(ctx, subject, 210), 280, metaY + 35);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('TERM / WEEK:', 280, metaY + 50);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText(truncateText(ctx, term, 210), 280, metaY + 63);
+
+      // Column 3
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('GRADE & SECTION:', 520, metaY + 20);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText(truncateText(ctx, grade, 210), 520, metaY + 35);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('DURATION / SESSIONS:', 520, metaY + 50);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText(truncateText(ctx, duration, 210), 520, metaY + 63);
+
+      // Render the 4 Core ILAW Sections
+      let currentY = metaY + 85;
+
+      // I - Intentions Section
+      currentY = drawCanvasSection(
+        ctx, 
+        'I. INTENTIONS (Learning Goals & Standards)', 
+        '#0284C7', 
+        [
+          { label: 'Competency & Standards', text: getValue('intentCompetencies') },
+          { label: 'Learning Objectives', text: getValue('intentObjectives') },
+          { label: 'Learner Context', text: getValue('intentContext') }
+        ], 
+        currentY, 
+        sheetWidth
+      );
+
+      // L - Learning Experience Section
+      currentY = drawCanvasSection(
+        ctx, 
+        'II. LEARNING EXPERIENCE (Instructional Flow & Activities)', 
+        '#16A34A', 
+        [
+          { label: 'Pre-Lesson Warmup', text: getValue('learnPreLesson') },
+          { label: 'Lesson Flow & Design Principles', text: getValue('learnFlow') },
+          { label: 'Resources & Integration', text: `${getValue('learnResources')} | ${getValue('learnIntegration')}` }
+        ], 
+        currentY, 
+        sheetWidth
+      );
+
+      // A - Assessing Learning Section
+      currentY = drawCanvasSection(
+        ctx, 
+        'III. ASSESSING LEARNING (Checks & Accommodations)', 
+        '#D97706', 
+        [
+          { label: 'Formative Assessment', text: getValue('assessFormative') },
+          { label: 'Inclusive Supports', text: getValue('assessAccommodations') }
+        ], 
+        currentY, 
+        sheetWidth
+      );
+
+      // W - Ways Forward Section
+      currentY = drawCanvasSection(
+        ctx, 
+        'IV. WAYS FORWARD (Extension & Reflection)', 
+        '#9333EA', 
+        [
+          { label: 'Extended Opportunities', text: getValue('forwardExtended') },
+          { label: 'Teacher Reflections', text: getValue('forwardReflections') }
+        ], 
+        currentY, 
+        sheetWidth
+      );
+
+      // Footer
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.fillText('Generated via ILAW Lesson Plan Studio • DepEd DO 016, s. 2026 Compliant', 35, sheetHeight - 28);
+    }
+
+    // Canvas Section Drawing Helper
+    function drawCanvasSection(ctx, title, colorHex, items, startY, sheetWidth) {
+      const boxWidth = sheetWidth - 70;
+      
+      // Header Bar
+      ctx.fillStyle = colorHex;
+      ctx.fillRect(35, startY, boxWidth, 22);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillText(title.toUpperCase(), 45, startY + 15);
+
+      let boxY = startY + 22;
+      let totalContentHeight = 0;
+
+      // Estimate height based on content lines
+      items.forEach(item => {
+        const text = item.text || 'N/A';
+        const lines = wrapText(ctx, text, boxWidth - 30, '10px Inter');
+        totalContentHeight += 16 + (lines.length * 13) + 4;
+      });
+
+      const sectionHeight = Math.max(75, totalContentHeight + 10);
+
+      // Section Background Box
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(35, boxY, boxWidth, sectionHeight);
+      ctx.strokeStyle = colorHex;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(35, startY, boxWidth, 22 + sectionHeight);
+
+      // Draw Items
+      let itemY = boxY + 12;
+      items.forEach(item => {
+        ctx.fillStyle = colorHex;
+        ctx.font = 'bold 9px Inter, sans-serif';
+        ctx.fillText(item.label.toUpperCase() + ':', 45, itemY);
+
+        itemY += 12;
+        ctx.fillStyle = '#1E293B';
+        ctx.font = '10px Inter, sans-serif';
+
+        const lines = wrapText(ctx, item.text || 'Not specified', boxWidth - 30, '10px Inter');
+        lines.slice(0, 4).forEach(line => {
+          ctx.fillText(line, 45, itemY);
+          itemY += 13;
+        });
+
+        itemY += 4;
+      });
+
+      return startY + 22 + sectionHeight + 12;
+    }
+
+    // Helper: Wrap text into multi-line arrays for Canvas
+    function wrapText(ctx, text, maxWidth, font) {
+      ctx.font = font;
+      const lines = [];
+      const paragraphs = text.split('\n');
+
+      paragraphs.forEach(paragraph => {
+        const words = paragraph.split(' ');
+        let currentLine = words[0] || '';
+
+        for (let i = 1; i < words.length; i++) {
+          const word = words[i];
+          const width = ctx.measureText(currentLine + " " + word).width;
+          if (width < maxWidth) {
+            currentLine += " " + word;
+          } else {
+            lines.push(currentLine);
+            currentLine = word;
+          }
+        }
+        lines.push(currentLine);
+      });
+
+      return lines;
+    }
+
+    // Helper: Truncate single line text with ellipsis
+    function truncateText(ctx, text, maxWidth) {
+      if (ctx.measureText(text).width <= maxWidth) return text;
+      let truncated = text;
+      while (truncated.length > 0 && ctx.measureText(truncated + '...').width > maxWidth) {
+        truncated = truncated.substring(0, truncated.length - 1);
+      }
+      return truncated + '...';
+    }
+
+    // Canvas Zoom Adjustment
+    function adjustCanvasZoom(delta) {
+      canvasScale = Math.max(0.5, Math.min(1.8, canvasScale + delta));
+      const text = document.getElementById('zoom-level-text');
+      if (text) text.textContent = `${Math.round(canvasScale * 100)}%`;
+      renderCanvasPreview();
+    }
+
+    function resetCanvasZoom() {
+      canvasScale = 1.0;
+      const text = document.getElementById('zoom-level-text');
+      if (text) text.textContent = '100%';
+      renderCanvasPreview();
+    }
+
+    // Trigger Print View
+    function triggerPrint() {
+      renderHTMLPreview();
+      window.print();
+    }
+
+    // Copy Lesson Plan text to Clipboard
+    function copyToClipboard() {
+      const data = {
+        teacher: getValue('teacherName'),
+        subject: getValue('learningArea'),
+        grade: getValue('gradeSection'),
+        title: getValue('lessonTitle'),
+        termWeek: getValue('termWeek'),
+        duration: getValue('durationSessions'),
+        intentComp: getValue('intentCompetencies'),
+        intentObj: getValue('intentObjectives'),
+        intentCtx: getValue('intentContext'),
+        learnPre: getValue('learnPreLesson'),
+        learnFlow: getValue('learnFlow'),
+        learnRes: getValue('learnResources'),
+        learnInteg: getValue('learnIntegration'),
+        assessForm: getValue('assessFormative'),
+        assessAcc: getValue('assessAccommodations'),
+        forwardExt: getValue('forwardExtended'),
+        forwardRef: getValue('forwardReflections')
+      };
+
+      const plainText = `
+ILAW LESSON PLAN (DepEd DO 016, s. 2026)
+----------------------------------------
+Teacher: ${data.teacher}
+Subject: ${data.subject} | Grade & Section: ${data.grade}
+Topic: ${data.title}
+Term/Week: ${data.termWeek} | Duration: ${data.duration}
+
+I. INTENTIONS
+- Competencies: ${data.intentComp}
+- Objectives:\n${data.intentObj}
+- Context: ${data.intentCtx}
+
+II. LEARNING EXPERIENCE
+- Pre-Lesson: ${data.learnPre}
+- Flow:\n${data.learnFlow}
+- Resources: ${data.learnRes}
+- Integration: ${data.learnInteg}
+
+III. ASSESSING LEARNING
+- Formative Assessment: ${data.assessForm}
+- Inclusive Accommodations: ${data.assessAcc}
+
+IV. WAYS FORWARD
+- Extended Opportunities: ${data.forwardExt}
+- Reflections: ${data.forwardRef}
+      `.trim();
+
+      const textarea = document.createElement('textarea');
+      textarea.value = plainText;
+      document.body.appendChild(textarea);
+      textarea.select();
+      
+      try {
+        document.execCommand('copy');
+        showToast('Lesson plan text copied to clipboard!');
+      } catch (err) {
+        showToast('Unable to copy text.');
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    // Download Canvas rendered view as PNG image
+    function downloadCanvasImage() {
+      const canvas = document.getElementById('ilawCanvas');
+      if (!canvas) return;
+
+      const title = getValue('lessonTitle') || 'ILAW_Lesson_Plan';
+      const filename = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_ilaw_plan.png`;
+
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('Downloaded PNG Canvas sheet image!');
+    }
+
+    // Focus & highlight preview area
+    function generateAndFocusPreview() {
+      updatePreview();
+      showToast('Generated fresh ILAW lesson plan layout!');
+      
+      const container = document.getElementById('html-preview-container');
+      if (container) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Notification Toast Message System
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3200);
+    }
+  </script>
+</body>
+</html>
